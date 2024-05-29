@@ -98,9 +98,13 @@ public class Paycek {
      * @return true if the generated mac digest is equal to the one received in headers, false otherwise
      */
     public boolean checkHeaders(Headers headers, String endpoint, String bodyString, String httpMethod, String contentType) {
-        String generatedMac = generateMacHash(headers.get("apikeyauth-nonce").get(0), endpoint, bodyString, httpMethod, contentType);
+        try {
+            String generatedMac = generateMacHash(headers.get("apikeyauth-nonce").get(0), endpoint, bodyString, httpMethod, contentType);
 
-        return MessageDigest.isEqual(generatedMac.getBytes(encoding), headers.get("apikeyauth-mac").get(0).getBytes(encoding));
+            return MessageDigest.isEqual(generatedMac.getBytes(encoding), headers.get("apikeyauth-mac").get(0).getBytes(encoding));
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean checkHeaders(Headers headers, String endpoint, String bodyString) {

@@ -6,7 +6,7 @@
 
     <groupId>io.paycek</groupId>
     <artifactId>paycek</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 
     <name>Paycek</name>
     <description>A connector library for communicating with PayCek public API</description>
@@ -22,7 +22,7 @@
         <developer>
             <name>Electrocoin</name>
             <organization>Electrocoin d.o.o.</organization>
-            <organizationUrl>https://electrocoin.hr</organizationUrl>
+            <organizationUrl>https://electrocoin.eu</organizationUrl>
         </developer>
     </developers>
 
