@@ -151,21 +151,46 @@ public class Paycek {
     }
 
     /**
-     * @param optionalFields optional fields:
-     *                       payment_id: String
-     *                       location_id: String
-     *                       items: List
-     *                       email: String
-     *                       success_url: String
-     *                       fail_url: String
-     *                       back_url: String
-     *                       success_url_callback: String
-     *                       fail_url_callback: String
-     *                       status_url_callback: String
-     *                       description: String
-     *                       language: String
-     *                       generate_pdf: Boolean
-     *                       client_fields: Map
+     * You can implement getting payment status in 3 ways:
+     * <ol>
+     *   <li><b>Provide <code>status_url_callback</code></b> upon opening a payment and receive status updates on your endpoint.</li>
+     *   <li><b>Provide <code>success_url_callback</code> and <code>fail_url_callback</code></b> upon opening a payment and receive success and fail updates on your endpoints.</li>
+     *   <li><b>Manually poll <code>payment/get</code></b> to check payment status.</li>
+     * </ol>
+     *
+     * <p><b>Do not use <code>fail_url</code> and <code>success_url</code> to update payment status in your system. These URLs are used ONLY for redirecting users back to your shop.</b></p>
+     *
+     *
+     * <h4>Authorization</h4>
+     * <p>If you decide to use callbacks, you <b>must check the headers for every callback</b> to ensure they are authorized.
+     * If a callback doesn't have a valid Authorization header, your server must respond with a <b>401 Unauthorized</b> status. If the callback has a valid Authorization header, your server must respond with a <b>200 OK</b> status.</p>
+     *
+     * <h4>Integration Testing</h4>
+     * <p>In order to ensure system security, on every new payment, an automated integration test will check if your integration is secure.
+     * An API call with an invalid Authorization header will be made to each of your callback endpoints. If any endpoint returns a status other than 401 for requests with an invalid Authorization header, <b>all ongoing payments will be canceled</b>, and your <b>profile will be blocked</b> to prevent unauthorized transactions. Ensure your endpoints are correctly configured to handle authorization and respond appropriately.</p>
+     *
+     *
+     * <p><i>Test profiles won't be blocked even if the response for callbacks with an invalid Authorization header returns an invalid status. The payment will still be canceled.</i></p>
+     *
+     * @param profileCode The profile code for the payment.
+     * @param dstAmount The amount of the payment.
+     * @param optionalFields Optional fields:
+     * <ul>
+     *   <li>payment_id: string</li>
+     *   <li>location_id: string</li>
+     *   <li>items: array</li>
+     *   <li>email: string</li>
+     *   <li>success_url: string</li>
+     *   <li>fail_url: string</li>
+     *   <li>back_url: string</li>
+     *   <li>success_url_callback: string</li>
+     *   <li>fail_url_callback: string</li>
+     *   <li>status_url_callback: string</li>
+     *   <li>description: string</li>
+     *   <li>language: string</li>
+     *   <li>generate_pdf: boolean</li>
+     *   <li>client_fields: Object</li>
+     * </ul>
      */
     public Map<String, Object> openPayment(String profileCode, String dstAmount, Map<String, Object> optionalFields) {
         Map<String, Object> body = new HashMap<>();

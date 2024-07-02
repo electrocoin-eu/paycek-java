@@ -14,7 +14,7 @@ Add dependency with maven.
 <dependency>
     <groupId>io.paycek</groupId>
     <artifactId>paycek</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
